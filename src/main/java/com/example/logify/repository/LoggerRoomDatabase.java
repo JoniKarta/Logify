@@ -1,4 +1,4 @@
-package com.example.logify;
+package com.example.logify.repository;
 
 import android.content.Context;
 
@@ -6,7 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.logify.converters.DateConverter;
+import com.example.logify.model.Logger;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@TypeConverters({DateConverter.class})
 @Database(entities = {Logger.class}, version = 1)
 public abstract class LoggerRoomDatabase extends RoomDatabase {
 
@@ -28,7 +33,6 @@ public abstract class LoggerRoomDatabase extends RoomDatabase {
 
     public static LoggerRoomDatabase getInstance(final Context context){
         // double check locking
-
         if(loggerRoomDatabase == null){
             try{
                 lock.lock();
@@ -55,7 +59,6 @@ public abstract class LoggerRoomDatabase extends RoomDatabase {
                 loggerRoomDatabase.loggerDao().insert(new Logger("ERROR", "Something went wrong", new Date()));
                 loggerRoomDatabase.loggerDao().insert(new Logger("TRACE", "Something went wrong", new Date()));
                 loggerRoomDatabase.loggerDao().insert(new Logger("DEBUG", "Something went wrong", new Date()));
-
             });
         }
     };

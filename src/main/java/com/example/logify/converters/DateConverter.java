@@ -1,4 +1,4 @@
-package com.example.logify;
+package com.example.logify.converters;
 
 import androidx.room.TypeConverter;
 

@@ -1,24 +1,36 @@
-package com.example.logify;
+package com.example.logify.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@Entity(tableName = "logger")
+@Entity(tableName = "logger_table")
 public class Logger {
+
+    public static final String TRACE = "TRACE";
+
+    public static final String DEBUG = "DEBUG";
+
+    public static final String INFO = "INFO";
+
+    public static final String ERROR = "ERROR";
+
+    public static final String WARNING = "WARNING";
+
+    public static final String OTHER = "OTHER";
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
 
+    @ColumnInfo(name = "tag")
     private String tag;
 
+    @ColumnInfo(name = "msg")
     private String msg;
 
-    @TypeConverters({DateConverter.class})
     private Date date;
-
 
     public Logger(String tag, String msg, Date date) {
         this.tag = tag;
