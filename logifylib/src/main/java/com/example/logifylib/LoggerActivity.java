@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -23,6 +24,7 @@ import com.example.logifylib.spinner.LogLevelAdapter;
 import com.example.logifylib.spinner.LogLevelManager;
 import com.example.logifylib.utility.Direction;
 import com.example.logifylib.viewmodel.LoggerViewModel;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 
 public class LoggerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -31,7 +33,7 @@ public class LoggerActivity extends AppCompatActivity implements AdapterView.OnI
     private LoggerRecyclerAdapter loggerRecyclerAdapter;
     public static LoggerViewModel loggerViewModel;
     private EditText search;
-    private SwitchCompat aSwitch;
+    private Switch aSwitch;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -84,7 +86,6 @@ public class LoggerActivity extends AppCompatActivity implements AdapterView.OnI
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
 
     private void setupViews() {
         setupSpinner();

@@ -7,18 +7,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.logifylib.viewmodel.LoggerViewModel;
 
-public class LoggerManager {
+public final class LoggerManager {
 
-    public static LoggerManager loggerManager;
-    public static LoggerViewModel loggerViewModel;
+    private static LoggerManager loggerManager;
+    private final LoggerViewModel loggerViewModel;
 
-    private LoggerManager(Application application) {
-        loggerViewModel = new ViewModelProvider.AndroidViewModelFactory(application).create(LoggerViewModel.class);
+    private LoggerManager(Context context) {
+        loggerViewModel = new ViewModelProvider.AndroidViewModelFactory((Application) context).create(LoggerViewModel.class);
     }
 
-    public static LoggerManager getInstance(Application application) {
-        if(loggerManager == null) {
-            loggerManager = new LoggerManager(application);
+    public synchronized static LoggerManager getInstance(Context context) {
+        if (loggerManager == null) {
+            loggerManager = new LoggerManager(context);
         }
         return loggerManager;
     }

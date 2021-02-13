@@ -1,5 +1,6 @@
 package com.example.logify;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -20,19 +21,7 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("TAG", "onCreate: I'M HEREEEEEE");
-        Intent intent = new Intent(SecondActivity.this, com.example.logifylib.LoggerActivity.class);
-        startActivity(intent);
-//        Intent intent = null;
-//        try {
-//            intent = new Intent(this,
-//                    Class.forName("com.example.logifylib.LoggerActivity"));
-//            startActivity(intent);
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-      //  LoggerActivity.startIntent(this);
-       // finish();
+
     }
 
     @Override

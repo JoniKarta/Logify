@@ -3,6 +3,7 @@ package com.example.logifylib.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -135,6 +136,7 @@ public class LoggerViewModel extends AndroidViewModel {
     }
 
 
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     public LiveData<List<Logger>> getByFilters() {
         return Transformations.switchMap(customLiveData, input -> {
             String sortBy = input.first == null ? Direction.ASC.name() : input.first;
