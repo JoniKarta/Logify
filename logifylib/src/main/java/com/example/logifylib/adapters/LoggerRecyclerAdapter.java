@@ -15,7 +15,7 @@ import com.example.logifylib.R;
 import com.example.logifylib.model.Logger;
 
 
-public class LoggerRecyclerAdapter extends ListAdapter<Logger, LoggerRecyclerAdapter.LoggerViewHolder>{
+public class LoggerRecyclerAdapter extends ListAdapter<Logger, LoggerRecyclerAdapter.LoggerViewHolder> {
 
     public LoggerRecyclerAdapter() {
         super(DIFF_CALLBACK);
@@ -24,7 +24,7 @@ public class LoggerRecyclerAdapter extends ListAdapter<Logger, LoggerRecyclerAda
     public static final DiffUtil.ItemCallback<Logger> DIFF_CALLBACK = new DiffUtil.ItemCallback<Logger>() {
         @Override
         public boolean areItemsTheSame(@NonNull Logger oldItem, @NonNull Logger newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override

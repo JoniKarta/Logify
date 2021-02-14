@@ -44,16 +44,16 @@ public interface LoggerDao {
     LiveData<List<Logger>> getAllLogsByMessageLike(String filterValue);
 
     @Query("SELECT * FROM logger_table WHERE tag = :tag AND msg LIKE '%' || :filterValue || '%' ORDER BY msg ASC")
-    LiveData<List<Logger>> getAllByTagAndFilterValueLikeAsc(String filterValue,String tag);
+    LiveData<List<Logger>> getAllByTagAndFilterValueLikeAsc(String filterValue, String tag);
 
     @Query("SELECT * FROM logger_table WHERE tag = :tag AND msg LIKE '%' || :filterValue || '%' ORDER BY msg DESC")
-    LiveData<List<Logger>> getAllByTagAndFilterValueLikeDesc(String filterValue,String tag);
+    LiveData<List<Logger>> getAllByTagAndFilterValueLikeDesc(String filterValue, String tag);
 
-    default LiveData<List<Logger>> getAllByTagAndFilterValueLike(String direction, String filterValue,String tag) {
-        if(direction.equals(Direction.ASC.name())) {
-            return getAllByTagAndFilterValueLikeAsc(filterValue,tag);
-        }else{
-            return getAllByTagAndFilterValueLikeDesc(filterValue,tag);
+    default LiveData<List<Logger>> getAllByTagAndFilterValueLike(String direction, String filterValue, String tag) {
+        if (direction.equals(Direction.ASC.name())) {
+            return getAllByTagAndFilterValueLikeAsc(filterValue, tag);
+        } else {
+            return getAllByTagAndFilterValueLikeDesc(filterValue, tag);
         }
     }
 }

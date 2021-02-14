@@ -16,46 +16,35 @@ import com.example.logifylib.model.Logger;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
-    private LoggerManager loggerManager;
+public class MainActivity extends LoggerUI {
+
+    private static final String TAG = "MainActivity";
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.another_layout);
-        Button button = findViewById(R.id.button);
-        Button button1 = findViewById(R.id.button1);
-        loggerManager = LoggerManager.getInstance(getApplication());
-        button.setOnClickListener(e -> {
-          //  startActivity(new Intent(MainActivity.this, LoggerUI.class));
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for(int i = 0; i< 100; i++){
-                        try {
-                            Thread.sleep(10000);
-                            LoggerManager.getInstance(getApplication()).getLoggerViewModel().insert(new Logger(Logger.ERROR, "ROMA", new Date()));
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
-                    }
+        new Thread(() -> {
+            try {
+                for (int i = 0; i < 1000; i++) {
+                    Thread.sleep(5000);
+                    getLoggerViewModel().insert(new Logger(Logger.INFO, "INFO", new Date()));
                 }
-            }).start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
-            LoggerManager.getInstance(getApplication()).getLoggerViewModel().getAllLogs().observe(this, loggers -> {
-                Log.i("TAG", "onCreate: 0" + loggers);
-            });
 
-            LoggerManager.getInstance(getApplication()).getLoggerViewModel().getAllLogsByMessageLike("ROMA").observe(this,loggers -> {
-                Log.i("TAG", "onCreate 1: " + loggers);
-            });
+        // This methods allows you to observe the changes and display the raw data to the console
+        getLoggerViewModel().getAllLogs().observe(this, loggers -> {
+            Log.i(TAG, "View logs: " + loggers);
         });
-
-        button1.setOnClickListener(e-> {
-            startActivity(new Intent(MainActivity.this, SecondActivity.class));
-
+        
+        getLoggerViewModel().loggerCount().observe(this, count -> {
+            Log.i(TAG, "Number of logs : " + count);
         });
 
     }
+    
 }

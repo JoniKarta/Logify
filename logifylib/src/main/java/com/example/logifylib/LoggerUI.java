@@ -48,12 +48,10 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
         // Handle text event change listener
         search.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -77,8 +75,13 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
 
         // Handle change state of the switch
         aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> loggerViewModel.setSortingValue(isChecked ? Direction.ASC.name() : Direction.DESC.name()));
+
+
     }
 
+    public LoggerViewModel getLoggerViewModel() {
+        return loggerViewModel;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
