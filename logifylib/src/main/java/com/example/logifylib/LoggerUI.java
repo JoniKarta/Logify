@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -85,6 +86,7 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("TAG", "onItemSelected: " + parent.getSelectedItem().toString());
         loggerViewModel.setLogTypeValue(parent.getSelectedItem().toString());
     }
 

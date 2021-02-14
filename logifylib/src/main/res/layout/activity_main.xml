@@ -56,7 +56,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_main_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_main_spinner"
+        android:paddingLeft="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <Switch
         android:id="@+id/activity_main_switch_direction"

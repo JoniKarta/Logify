@@ -1,6 +1,7 @@
 package com.example.logifylib.spinner;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class LogLevelAdapter extends ArrayAdapter<LogLevelItem> {
 
     private View viewInflater(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.log_level_spinner, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.log_level_spinner, parent, false);
         }
         LogLevelItem levelItem = getItem(position);
         TextView textView = convertView.findViewById(R.id.log_level_spinner_level_text_view);
