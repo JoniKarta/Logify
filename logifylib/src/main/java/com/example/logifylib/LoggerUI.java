@@ -34,7 +34,7 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
     public  LoggerViewModel loggerViewModel;
     private EditText search;
     private Switch aSwitch;
-
+    private Spinner spinner;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     private void setupSpinner() {
-        Spinner spinner = findViewById(R.id.activity_main_spinner);
+        spinner = findViewById(R.id.activity_main_spinner);
         spinner.setAdapter(new LogLevelAdapter(this, LogLevelManager.getInstance().getLogLevelItemList()));
         spinner.setOnItemSelectedListener(this);
     }
