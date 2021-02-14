@@ -1,62 +1,60 @@
 package com.example.logify;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Switch;
 
-import com.example.logifylib.LoggerActivity;
 import com.example.logifylib.LoggerManager;
 import com.example.logifylib.LoggerUI;
-import com.example.logifylib.adapters.LoggerRecyclerAdapter;
 import com.example.logifylib.model.Logger;
-import com.example.logifylib.spinner.LogLevelAdapter;
-import com.example.logifylib.spinner.LogLevelManager;
-import com.example.logifylib.utility.Direction;
-import com.example.logifylib.viewmodel.LoggerViewModel;
 
 import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
-
-
+    private LoggerManager loggerManager;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.another_layout);
         Button button = findViewById(R.id.button);
-
+        Button button1 = findViewById(R.id.button1);
+        loggerManager = LoggerManager.getInstance(getApplication());
         button.setOnClickListener(e -> {
-            startActivity(
-                    LoggerUI
-                    .getInstance(this).
-                            createLoggerIntent());
-            finish();
+          //  startActivity(new Intent(MainActivity.this, LoggerUI.class));
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i = 0; i< 100; i++){
+                        try {
+                            Thread.sleep(10000);
+                            LoggerManager.getInstance(getApplication()).getLoggerViewModel().insert(new Logger(Logger.ERROR, "ROMA", new Date()));
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+
+            LoggerManager.getInstance(getApplication()).getLoggerViewModel().getAllLogs().observe(this, loggers -> {
+                Log.i("TAG", "onCreate: 0" + loggers);
+            });
+
+            LoggerManager.getInstance(getApplication()).getLoggerViewModel().getAllLogsByMessageLike("ROMA").observe(this,loggers -> {
+                Log.i("TAG", "onCreate 1: " + loggers);
+            });
+        });
+
+        button1.setOnClickListener(e-> {
+            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+
         });
 
     }

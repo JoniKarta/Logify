@@ -13,7 +13,7 @@ public final class LoggerManager {
     private final LoggerViewModel loggerViewModel;
 
     private LoggerManager(Context context) {
-        loggerViewModel = new ViewModelProvider.AndroidViewModelFactory((Application) context).create(LoggerViewModel.class);
+        loggerViewModel = new ViewModelProvider.AndroidViewModelFactory((Application)context).create(LoggerViewModel.class);
     }
 
     public synchronized static LoggerManager getInstance(Context context) {

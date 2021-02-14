@@ -2,20 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.logifylib">
 
-
-<!--    <application>-->
-<!--        <activity android:name=".LoggerActivity" />-->
-<!--        -->
-<!--    </application>-->
-        <application android:exported="true">
-
-            <activity android:name=".LoggerActivity">
-<!--                <intent-filter>-->
-<!--                    <action android:name="android.intent.action.MAIN" />-->
-<!--&lt;!&ndash;                    <category android:name="android.intent.category.DEFAULT" />&ndash;&gt;-->
-<!--                </intent-filter>-->
-            </activity>
-        </application>
+    <application android:exported="true">
+        <activity android:name=".LoggerUI"/>
+    </application>
 
 
 </manifest>

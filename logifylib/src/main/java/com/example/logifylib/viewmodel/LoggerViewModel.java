@@ -20,9 +20,14 @@ import java.util.List;
 public class LoggerViewModel extends AndroidViewModel {
 
 
-
+    /**
+     * This variable hold a reference to the logger repository which
+     */
     private final LoggerRepository loggerRepository;
 
+    /**
+     * Mutable live data variable which observe string that listen
+     */
     private final MutableLiveData<String> sortingMutableLiveData;
 
     private final MutableLiveData<String> logTextSearchMutableLiveData;
@@ -136,7 +141,6 @@ public class LoggerViewModel extends AndroidViewModel {
     }
 
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
     public LiveData<List<Logger>> getByFilters() {
         return Transformations.switchMap(customLiveData, input -> {
             String sortBy = input.first == null ? Direction.ASC.name() : input.first;

@@ -1,51 +1,124 @@
 package com.example.logifylib;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
 
-import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.logifylib.model.Logger;
+import com.example.logifylib.adapters.LoggerRecyclerAdapter;
+import com.example.logifylib.spinner.LogLevelAdapter;
+import com.example.logifylib.spinner.LogLevelManager;
+import com.example.logifylib.utility.Direction;
 import com.example.logifylib.viewmodel.LoggerViewModel;
 
-import java.util.List;
 
-public final class LoggerUI {
 
-    private static LoggerViewModel loggerViewModel;
-    private static LoggerUI loggerUI;
-    private final Intent intent;
+public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private LoggerUI(Context context) {
-        intent = new Intent();
-        intent.setComponent(new ComponentName(context.getPackageName(),
-                LoggerActivity.class.getName()));
+    private RecyclerView recyclerView;
+    private LoggerRecyclerAdapter loggerRecyclerAdapter;
+    public  LoggerViewModel loggerViewModel;
+    private EditText search;
+    private Switch aSwitch;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setupViews();
+        loggerViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LoggerViewModel.class);
+
+        loggerViewModel.getByFilters().observe(this, loggerList -> loggerRecyclerAdapter.submitList(loggerList));
+
+        // Handle text event change listener
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggerViewModel.setLogSearchValue(s.toString());
+            }
+        });
+
+
+        // Handle remove on logger item
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                loggerViewModel.delete(loggerRecyclerAdapter.getLoggerPositionAt(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        // Handle change state of the switch
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> loggerViewModel.setSortingValue(isChecked ? Direction.ASC.name() : Direction.DESC.name()));
     }
 
-    public synchronized static LoggerUI getInstance(Context context){
-        if(loggerUI == null){
-            loggerUI = new LoggerUI(context);
-            loggerViewModel = new ViewModelProvider.AndroidViewModelFactory((Application)context.getApplicationContext()).create(LoggerViewModel.class);
-        }
-        return loggerUI;
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        loggerViewModel.setLogTypeValue(parent.getSelectedItem().toString());
     }
 
-    public Intent createLoggerIntent(){
-        return intent;
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
-    public void insert(Logger logger) {
-        loggerViewModel.insert(logger);
+    private void setupViews() {
+        setupSpinner();
+        setupRecyclerView();
+        setupSearch();
+        setupSwitch();
     }
 
-    public void insertMany(Logger... loggers){
-        loggerViewModel.insertMany(loggers);
+    private void setupRecyclerView() {
+        recyclerView = findViewById(R.id.logger_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        loggerRecyclerAdapter = new LoggerRecyclerAdapter();
+        recyclerView.setAdapter(loggerRecyclerAdapter);
     }
 
-    public LiveData<List<Logger>> getByFilters() {
-        return loggerViewModel.getByFilters();
+    private void setupSwitch() {
+        aSwitch = findViewById(R.id.activity_main_switch_direction);
+        aSwitch.setChecked(true);
+
     }
+
+    private void setupSpinner() {
+        Spinner spinner = findViewById(R.id.activity_main_spinner);
+        spinner.setAdapter(new LogLevelAdapter(this, LogLevelManager.getInstance().getLogLevelItemList()));
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    private void setupSearch() {
+        search = findViewById(R.id.activity_main_logger_search);
+    }
+
 }

@@ -32,16 +32,17 @@ public abstract class LoggerRoomDatabase extends RoomDatabase {
 
 
     public static LoggerRoomDatabase getInstance(final Context context){
-        // double check locking
+        // double check locking for improving performance
         if(loggerRoomDatabase == null){
             try{
                 lock.lock();
-                loggerRoomDatabase = Room.databaseBuilder(
-                        context.getApplicationContext(),
-                        LoggerRoomDatabase.class, "logger_database")
-                        .fallbackToDestructiveMigration()
-                        .build();
-
+                if(loggerRoomDatabase == null){
+                    loggerRoomDatabase = Room.databaseBuilder(
+                            context.getApplicationContext(),
+                            LoggerRoomDatabase.class, "logger_database")
+                            .fallbackToDestructiveMigration()
+                            .build();
+                }
             }finally{
                 lock.unlock();
             }
@@ -49,17 +50,5 @@ public abstract class LoggerRoomDatabase extends RoomDatabase {
         return loggerRoomDatabase;
     }
 
-
-//    public static RoomDatabase.Callback mockData = new RoomDatabase.Callback() {
-//        @Override
-//        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-//            super.onCreate(db);
-//            dataWriteExecutorService.execute(() -> {
-//                loggerRoomDatabase.loggerDao().insert(new Logger("ERROR", "Something went wrong", new Date()));
-//                loggerRoomDatabase.loggerDao().insert(new Logger("TRACE", "Something went wrong", new Date()));
-//                loggerRoomDatabase.loggerDao().insert(new Logger("DEBUG", "Something went wrong", new Date()));
-//            });
-//        }
-//    };
 
 }
