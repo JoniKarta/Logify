@@ -1,6 +1,5 @@
 package com.example.logifylib;
 
-import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,7 +35,6 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
     private EditText search;
     private Switch aSwitch;
     private Spinner spinner;
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +94,7 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     private void setupViews() {
-        //setupSpinner();
+        setupSpinner();
         setupRecyclerView();
         setupSearch();
         setupSwitch();
