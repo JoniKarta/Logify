@@ -96,7 +96,7 @@ public class LoggerUI extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     private void setupViews() {
-        setupSpinner();
+        //setupSpinner();
         setupRecyclerView();
         setupSearch();
         setupSwitch();
